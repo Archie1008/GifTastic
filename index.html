@@ -3,20 +3,90 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
 </head>
 <body>
-	<div id="animalsButtons">
+
+	<div id="topicsButtons">
     </div>
 
-    <form id="animal-form">
-        <label for="animal-input"> Add an animal<label>
-        <input type="text" id="animal-input"><br>
-    	<input id="addAnimal" type="submit" value="Submit">
-    </form>
-
-    <div id="animals">
-
+    <div id="topics">
     </div>
+
+<!--     <form id="topics-form">
+        <label for="topics-input"> Add topics <label>
+        <input type="text" id="topics-input">
+    	<input id="addTopics" type="submit" value="Submit">
+    </form> -->
+
+    
+
+<script>
+    var topics = ["muay thai" , "mma" , "boxing" , "karate" , "kung-fu" , "kickboxing" , "judo"];
+    
+    // function lol() {
+    //     var gifButton = $("<button id='lol' value='judo'>LOOOL</button>");
+    //     $("#topicsButtons").prepend(gifButton);
+    // }
+
+    // lol();
+
+//create html layout
+//make var topics which is gonna be an array
+//make a buttons from an array strings when page loading
+//when clicking on the button with a topic make an AJAX request to Giphy API
+//make the requested gifs appear in a "topics" div container
+//make the ratings of the gifs appear in the same container
+//create a button that will push input into an array and create new buttons with it
+//make gifs static when on their upload
+//bells and whistles 
+
+    for ( var i = 0 ; i<topics.length ; i++) {
+        var gifButton = $("<button style='margin:10px;' type='button' class='btn btn-default btn-md'>");
+        $("#topicsButtons").prepend(gifButton);
+        $(gifButton).prepend(topics[i]);
+        $(gifButton).attr("value",topics[i]);
+        $(gifButton).attr("id","item-" + topics.indexOf(topics[i]));
+    }
+
+    $(".btn-md").on("click" , function(e) {
+        
+        var martialArt = $(this).attr("value");
+
+        console.log("Id = "+e.target.id);
+        console.log("Value = "+e.target.value);
+        console.log(martialArt);
+
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + martialArt + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+        .done(function(response) {
+            console.log(response.data);
+            console.log(queryURL);
+            
+            var results = response.data;
+
+            for (var i = 0; i < results.length; i++) {
+                var gifDiv = $("<div class='item'>");
+                var rating = results[i].rating;
+                var p = $("<p>").text("Rating: " + rating);
+                var personImage = $("<img>");
+                personImage.attr("src", results[i].images.fixed_height.url);
+                gifDiv.prepend(p);
+                gifDiv.prepend(personImage);
+                $("#topics").prepend(gifDiv);
+            }
+        });
+    });
+
+
+
+//why if I'm creating var gifButton on a global scope and use it in for loop to create more buttons it creates only one button and puts all the strings from an array in a one button?
+</script>
 	
 </body>
 </html>
