@@ -11,8 +11,18 @@
 </head>
 <body>
 
-	<div id="topicsButtons">
+<div class="wrapper">
+
+	<div class="input-group">
+        <input type="text" class="form-control" placeholder="Search for...">
+        <span class="input-group-btn">
+            <button class="btn btn-default go-button" type="button">Go!</button>
+        </span>
+    </div><!-- /input-group -->
+
+    <div id="topicsButtons">
     </div>
+
 
     <div id="topics">
     </div>
@@ -23,17 +33,10 @@
     	<input id="addTopics" type="submit" value="Submit">
     </form> -->
 
-    
+</div> <!-- wrapper -->  
 
 <script>
     var topics = ["muay thai" , "mma" , "boxing" , "karate" , "kung-fu" , "kickboxing" , "judo"];
-    
-    // function lol() {
-    //     var gifButton = $("<button id='lol' value='judo'>LOOOL</button>");
-    //     $("#topicsButtons").prepend(gifButton);
-    // }
-
-    // lol();
 
 //create html layout
 //make var topics which is gonna be an array
@@ -41,6 +44,7 @@
 //when clicking on the button with a topic make an AJAX request to Giphy API
 //make the requested gifs appear in a "topics" div container
 //make the ratings of the gifs appear in the same container
+
 //create a button that will push input into an array and create new buttons with it
 //make gifs static when on their upload
 //bells and whistles 
@@ -86,9 +90,30 @@
         });
     });
 
+    $(".go-button").on("click", function(e){
+        var newTopic = $(".form-control").val();
+        console.log(newTopic);
+        $("#topicsButtons").empty();
+        topics.push(newTopic);
+
+
+
+        for ( var i = 0 ; i<topics.length ; i++) {
+            var gifButton = $("<button style='margin:10px;' type='button' class='btn btn-default btn-md'>");
+            $("#topicsButtons").prepend(gifButton);
+            $(gifButton).prepend(topics[i]);
+            $(gifButton).attr("value",topics[i]);
+            $(gifButton).attr("id","item-" + topics.indexOf(topics[i]));
+        }
+    });
+
+
+
+
 
 
 //why if I'm creating var gifButton on a global scope and use it in for loop to create more buttons it creates only one button and puts all the strings from an array in a one button?
+//can I simply switch http protocol to https on everywebsite?
 </script>
 	
 </body>
