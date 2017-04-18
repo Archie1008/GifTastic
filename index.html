@@ -27,16 +27,11 @@
     <div id="topics">
     </div>
 
-<!--     <form id="topics-form">
-        <label for="topics-input"> Add topics <label>
-        <input type="text" id="topics-input">
-    	<input id="addTopics" type="submit" value="Submit">
-    </form> -->
 
 </div> <!-- wrapper -->  
 
 <script>
-    var topics = ["muay thai" , "mma" , "boxing" , "karate" , "kung-fu" , "kickboxing" , "judo"];
+    var topics = ["Muay Thai" , "MMA" , "Boxing" , "Karate" , "Kung Fu" , "Kickboxing" , "Judo"];
 
 //create html layout
 //make var topics which is gonna be an array
@@ -44,20 +39,33 @@
 //when clicking on the button with a topic make an AJAX request to Giphy API
 //make the requested gifs appear in a "topics" div container
 //make the ratings of the gifs appear in the same container
-
 //create a button that will push input into an array and create new buttons with it
 //make gifs static when on their upload
+
 //bells and whistles 
 
     for ( var i = 0 ; i<topics.length ; i++) {
-        var gifButton = $("<button style='margin:10px;' type='button' class='btn btn-default btn-md'>");
+        var gifButton = $("<button style='margin:10px;' class='btn btn-default btn-md'>");
         $("#topicsButtons").prepend(gifButton);
         $(gifButton).prepend(topics[i]);
         $(gifButton).attr("value",topics[i]);
-        $(gifButton).attr("id","item-" + topics.indexOf(topics[i]));
+        // $(gifButton).attr("id","item-" + topics.indexOf(topics[i]));
     }
 
-    $(".btn-md").on("click" , function(e) {
+    $(".go-button").on("click", function(e){
+        var newTopic = $(".form-control").val();
+        if (newTopic.length > 0) {
+            topics.push(newTopic);
+            var gifButton = $("<button style='margin:10px;' class='btn btn-default btn-md'>");
+            $("#topicsButtons").prepend(gifButton);
+            $(gifButton).prepend(newTopic);
+            $(gifButton).attr("value", newTopic);
+            $(".form-control").val("");
+        }
+    });
+
+    // $(".btn-md").on("click" , function()???? не работает
+$(document).on("click", ".btn-md", function(e) {
         
         var martialArt = $(this).attr("value");
 
@@ -78,36 +86,33 @@
             var results = response.data;
 
             for (var i = 0; i < results.length; i++) {
-                var gifDiv = $("<div class='item'>");
+                var gifDiv = $("<div>");
                 var rating = results[i].rating;
                 var p = $("<p>").text("Rating: " + rating);
                 var personImage = $("<img>");
-                personImage.attr("src", results[i].images.fixed_height.url);
+                $(personImage).attr("id" , i);
+                personImage.attr("src", results[i].images.fixed_height_still.url);
                 gifDiv.prepend(p);
                 gifDiv.prepend(personImage);
                 $("#topics").prepend(gifDiv);
             }
+
+            $("img").on("click", function(){
+                var imgId = $(this).attr("id");
+                var imgSrc = $(this).attr("src");
+                console.log(imgId);
+                console.log($(this).attr("src"));
+                // .images.fixed_height.url;
+                if( imgSrc === results[imgId].images.fixed_height_still.url) {
+                    $(this).attr("src", results[imgId].images.fixed_height.url);
+                }
+
+                else {
+                    $(this).attr("src", results[imgId].images.fixed_height_still.url);
+                }
+            });
         });
     });
-
-    $(".go-button").on("click", function(e){
-        var newTopic = $(".form-control").val();
-        console.log(newTopic);
-        $("#topicsButtons").empty();
-        topics.push(newTopic);
-
-
-
-        for ( var i = 0 ; i<topics.length ; i++) {
-            var gifButton = $("<button style='margin:10px;' type='button' class='btn btn-default btn-md'>");
-            $("#topicsButtons").prepend(gifButton);
-            $(gifButton).prepend(topics[i]);
-            $(gifButton).attr("value",topics[i]);
-            $(gifButton).attr("id","item-" + topics.indexOf(topics[i]));
-        }
-    });
-
-
 
 
 
