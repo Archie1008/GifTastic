@@ -4,6 +4,9 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
             crossorigin="anonymous">    
@@ -11,115 +14,41 @@
 </head>
 <body>
 
-<div class="wrapper">
-
-	<div class="input-group">
-        <input type="text" class="form-control" placeholder="Search for...">
-        <span class="input-group-btn">
-            <button class="btn btn-default go-button" type="button">Go!</button>
-        </span>
-    </div><!-- /input-group -->
-
-    <div id="topicsButtons">
-    </div>
 
 
-    <div id="topics">
-    </div>
+<div class="container">
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Martial Arts Gifs</a>
+            <form class="navbar-form navbar-right">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for martial art...">
+                </div>
+                <button type="button" class="btn btn-default go-button"><span class="glyphicon glyphicon-search"></span></button>
+            </form>
+        </div>
+    </nav>
 
 
-</div> <!-- wrapper -->  
+    <div class="row row1">
+    </div> <!-- row1 --> 
 
-<script>
-    var topics = ["Muay Thai" , "MMA" , "Boxing" , "Karate" , "Kung Fu" , "Kickboxing" , "Judo"];
-
-//create html layout
-//make var topics which is gonna be an array
-//make a buttons from an array strings when page loading
-//when clicking on the button with a topic make an AJAX request to Giphy API
-//make the requested gifs appear in a "topics" div container
-//make the ratings of the gifs appear in the same container
-//create a button that will push input into an array and create new buttons with it
-//make gifs static when on their upload
-
-//bells and whistles 
-
-    for ( var i = 0 ; i<topics.length ; i++) {
-        var gifButton = $("<button style='margin:10px;' class='btn btn-default btn-md'>");
-        $("#topicsButtons").prepend(gifButton);
-        $(gifButton).prepend(topics[i]);
-        $(gifButton).attr("value",topics[i]);
-        // $(gifButton).attr("id","item-" + topics.indexOf(topics[i]));
-    }
-
-    $(".go-button").on("click", function(e){
-        var newTopic = $(".form-control").val();
-        if (newTopic.length > 0) {
-            topics.push(newTopic);
-            var gifButton = $("<button style='margin:10px;' class='btn btn-default btn-md'>");
-            $("#topicsButtons").prepend(gifButton);
-            $(gifButton).prepend(newTopic);
-            $(gifButton).attr("value", newTopic);
-            $(".form-control").val("");
-        }
-    });
-
-    // $(".btn-md").on("click" , function()???? не работает
-$(document).on("click", ".btn-md", function(e) {
-        
-        var martialArt = $(this).attr("value");
-
-        console.log("Id = "+e.target.id);
-        console.log("Value = "+e.target.value);
-        console.log(martialArt);
-
-        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + martialArt + "&api_key=dc6zaTOxFJmzC&limit=10";
-
-        $.ajax({
-          url: queryURL,
-          method: "GET"
-        })
-        .done(function(response) {
-            console.log(response.data);
-            console.log(queryURL);
+    <div class="row row2">
+        <div class="col-md-8">
+            <div id="topics">
+            </div>
+        </div> <!-- col-md-8 -->
             
-            var results = response.data;
+            <div id="topicsButtons">
+            </div>
+            
+        </div> <!-- col-md-2-->
+    </div> <!-- row2 -->
 
-            for (var i = 0; i < results.length; i++) {
-                var gifDiv = $("<div>");
-                var rating = results[i].rating;
-                var p = $("<p>").text("Rating: " + rating);
-                var personImage = $("<img>");
-                $(personImage).attr("id" , i);
-                personImage.attr("src", results[i].images.fixed_height_still.url);
-                gifDiv.prepend(p);
-                gifDiv.prepend(personImage);
-                $("#topics").prepend(gifDiv);
-            }
+</div> <!-- container -->  
 
-            $("img").on("click", function(){
-                var imgId = $(this).attr("id");
-                var imgSrc = $(this).attr("src");
-                console.log(imgId);
-                console.log($(this).attr("src"));
-                // .images.fixed_height.url;
-                if( imgSrc === results[imgId].images.fixed_height_still.url) {
-                    $(this).attr("src", results[imgId].images.fixed_height.url);
-                }
-
-                else {
-                    $(this).attr("src", results[imgId].images.fixed_height_still.url);
-                }
-            });
-        });
-    });
-
-
-
-
-//why if I'm creating var gifButton on a global scope and use it in for loop to create more buttons it creates only one button and puts all the strings from an array in a one button?
-//can I simply switch http protocol to https on everywebsite?
-</script>
+<script src="assets/javascript/gifs.js"></script>
 	
 </body>
 </html>

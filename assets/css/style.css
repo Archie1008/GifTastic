@@ -1,0 +1,48 @@
+html {
+	height:100%
+} 
+
+body {
+	height: 100%;
+	background-color: black;
+}
+
+.container {
+	/*min-height: 100vh;*/
+	min-height: 100%;
+	background-color: white;
+}
+
+.navbar-brand {
+	/*word-spacing: 5px;*/
+	padding-left: 100px;
+}
+
+.row1 {
+	height: 50px;
+}
+
+.row2 {
+
+}
+
+.col-md-4 {
+	padding-top:30px;
+}
+
+.btn-md {
+	margin-left:10px;
+	margin-right:10px;
+	margin-top:20px;
+}
+
+.col-md-8 {
+	border-right: 1px solid red;
+	min-height: 300px;
+	padding-top:30px;
+}
+
+.gifDiv {
+	display: inline-block;
+	margin: 10px;
+}
